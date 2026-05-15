@@ -23,14 +23,21 @@ class AcademicMNISTNet(nn.Module):
             nn.MaxPool2d(2),
             nn.Dropout(0.20),
         )
-        self.classifier = nn.Sequential(
+        self.embedding = nn.Sequential(
             nn.Flatten(),
             nn.Linear(64 * 7 * 7, 256),
             nn.ReLU(inplace=True),
             nn.Dropout(0.35),
-            nn.Linear(256, 10),
         )
+        self.classifier = nn.Linear(256, 10)
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward_features(self, x: torch.Tensor) -> torch.Tensor:
         x = self.features(x)
-        return self.classifier(x)
+        return self.embedding(x)
+
+    def forward(self, x: torch.Tensor, return_features: bool = False):
+        features = self.forward_features(x)
+        logits = self.classifier(features)
+        if return_features:
+            return logits, features
+        return logits

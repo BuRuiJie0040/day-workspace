@@ -17,46 +17,49 @@ For a fuller explanation of branches, worktrees, and GitHub integration, see
 
 ## MNIST project
 
-The project trains a compact CNN with:
+The project now outputs a complete local experiment package for MNIST:
 
-- manual MNIST downloader and IDX parser
-- reproducible train/validation split
-- AdamW optimizer and cosine learning-rate schedule
-- checkpointing, metrics export, and visualization outputs
+- `best_model.pth`
+- `Device.txt`
+- `training_log_时间戳.log`
+- `accuracy_comparison.png`
+- `confusion_matrix.png`
+- `tsne_points.png`
+- `metrics.csv`
+- `tsne_points.csv`
 
 ### Main files
 
 - `train_mnist.py`: training entrypoint
 - `mnist_project/data.py`: MNIST download and dataset loading
 - `mnist_project/model.py`: CNN architecture
-- `mnist_project/training.py`: training, evaluation, and artifact generation
+- `mnist_project/training.py`: training loop, logging, evaluation, and artifact generation
 
 ### Run locally
 
 ```powershell
-$env:HTTP_PROXY='http://127.0.0.1:7890'
-$env:HTTPS_PROXY='http://127.0.0.1:7890'
-D:\Anaconda\python.exe train_mnist.py --epochs 5 --batch-size 128 --cpu
+D:\Anaconda\python.exe train_mnist.py --epochs 50 --batch-size 128 --cpu
 ```
+
+This command does not require proxy environment variables by default. If your own
+network cannot directly download MNIST, you can either:
+
+- manually place the four MNIST IDX files under `data/raw`
+- or configure your own proxy before running
 
 ### Quick verification run used here
 
 ```powershell
-$env:HTTP_PROXY='http://127.0.0.1:7890'
-$env:HTTPS_PROXY='http://127.0.0.1:7890'
-D:\Anaconda\python.exe train_mnist.py --epochs 1 --batch-size 128 --train-subset 12000 --test-subset 2000 --cpu
+D:\Anaconda\python.exe train_mnist.py --epochs 3 --batch-size 128 --train-subset 12000 --test-subset 2000 --tsne-samples 300 --cpu
 ```
-
-That verification run produced:
-
-- validation accuracy: `0.9692`
-- test accuracy: `0.9545`
-- macro F1: `0.9536`
 
 Generated outputs are written to:
 
-- `artifacts/metrics.json`
-- `artifacts/classification_report.json`
-- `artifacts/training_curves.png`
+- `artifacts/best_model.pth`
+- `artifacts/Device.txt`
+- `artifacts/training_log_*.log`
+- `artifacts/metrics.csv`
 - `artifacts/confusion_matrix.png`
-- `artifacts/sample_predictions.png`
+- `artifacts/accuracy_comparison.png`
+- `artifacts/tsne_points.png`
+- `artifacts/tsne_points.csv`

@@ -1,0 +1,10 @@
+Hostname: LAPTOP-8CSQT6MM
+Platform: Windows-10-10.0.26100-SP0
+System: Windows 10
+Machine: AMD64
+Processor: Intel64 Family 6 Model 183 Stepping 1, GenuineIntel
+Python: 3.7.0 (default, Jun 28 2018, 08:04:48) [MSC v.1912 64 bit (AMD64)]
+PyTorch: 1.13.1+cpu
+CUDA available: False
+Selected device: cpu
+CPU count: 28
